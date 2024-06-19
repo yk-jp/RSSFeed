@@ -1,0 +1,29 @@
+.sticky {
+  position: absolute;
+  top: 0;
+}
+
+.vw100 {
+  width: 100vw;
+}
+
+.w80 {
+  width: 80%;
+}
+
+.p1 {
+  padding: 1em;
+}
+
+p.thick {
+  font-weight: bold;
+}
+
+.bg {
+  background-color: #f2f2f2;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
