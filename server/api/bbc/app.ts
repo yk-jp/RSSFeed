@@ -1,5 +1,7 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 
+import { BBC_URL } from './config';
+
 /**
  *
  * Event doc: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
@@ -14,9 +16,7 @@ export const lambdaHandler = async (event: APIGatewayProxyEvent): Promise<APIGat
     try {
         return {
             statusCode: 200,
-            body: JSON.stringify({
-                message: 'hello world',
-            }),
+            body: JSON.stringify(event.body),
         };
     } catch (err) {
         console.log(err);
