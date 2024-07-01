@@ -8,6 +8,8 @@ Resources:
       CodeUri: .
       Handler: api/theconversation/app.lambdaHandler
       Runtime: nodejs20.x
+      # MemorySize: 512
+      Timeout: 30
       Architectures:
         - x86_64
     Metadata: # Manage esbuild properties

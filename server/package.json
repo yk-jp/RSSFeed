@@ -13,15 +13,20 @@
         "test": "npm run compile && npm run unit"
     },
     "dependencies": {
+        "@sparticuz/chromium": "^110.0.1",
+        "axios": "^1.7.2",
+        "cheerio": "^1.0.0-rc.12",
         "esbuild": "^0.14.14",
-        "puppeteer-core": "^22.12.1"
+        "puppeteer-core": "19.6",
+        "puppeteer-extra": "^3.3.6",
+        "puppeteer-extra-plugin-stealth": "^2.11.2"
     },
     "devDependencies": {
         "@jest/globals": "^29.2.0",
-        "@sparticuz/chromium": "^123.0.1",
         "@types/aws-lambda": "^8.10.92",
+        "@types/cheerio": "^0.22.35",
         "@types/jest": "^29.2.0",
-        "@types/node": "^20.5.7",
+        "@types/node": "^20.14.9",
         "@typescript-eslint/eslint-plugin": "^5.10.2",
         "@typescript-eslint/parser": "^5.10.2",
         "aws-lambda": "^1.0.7",
@@ -32,6 +37,6 @@
         "prettier": "^2.5.1",
         "ts-jest": "^29.0.5",
         "ts-node": "^10.9.1",
-        "typescript": "^4.8.4"
+        "typescript": "^4.9.5"
     }
 }
