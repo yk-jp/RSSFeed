@@ -17,8 +17,12 @@ const fetchNews = async (): Promise<News[]> => {
         const newsDivs = $(section).find(`div[data-testid="ImmutableGridSlot"]`);
 
         newsDivs.each((_, news) => {
-            const link = $(news).find('a').attr('href');
+            const id = $(news).find('a').attr('tentacle-id');
+            if (!id) {
+                return;
+            }
 
+            const link = $(news).find('a').attr('href');
             if (!link) {
                 return;
             }
@@ -34,15 +38,34 @@ const fetchNews = async (): Promise<News[]> => {
                 image = '';
             }
 
-            res.push({ title, link, image });
+            res.push({ id, title, link, image });
         });
     });
 
     return res;
 };
 
+const saveNews = async (news: News[]): Promise<void> => {
+    for (const item of news) {
+        const params = {
+            TableName: 'NewsTable',
+            Item: {
+                id: item.link, // Using link as the unique identifier
+                title: item.title,
+                link: item.link,
+                image: item.image,
+            },
+        };
+
+        try {
+            await ddbDocClient.send(new PutCommand(params));
+        } catch (error) {
+            console.error(`Error saving news item to DynamoDB: ${item.link}`, error);
+        }
+    }
+};
+
 export const lambdaHandler: Handler = async (): Promise<void> => {
     const news: News[] = await fetchNews();
-    console.log(news);
-    console.log(news.length);
+    await saveNews(news);
 };

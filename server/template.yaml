@@ -27,10 +27,10 @@ Resources:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: title
+        - AttributeName: id
           AttributeType: S
       KeySchema:
-        - AttributeName: newsId
+        - AttributeName: id
           KeyType: HASH
       BillingMode: PROVISIONED
       ProvisionedThroughput:
