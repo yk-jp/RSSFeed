@@ -30,7 +30,7 @@ Resources:
         - AttributeName: title
           AttributeType: S
       KeySchema:
-        - AttributeName: title
+        - AttributeName: newsId
           KeyType: HASH
       BillingMode: PROVISIONED
       ProvisionedThroughput:
