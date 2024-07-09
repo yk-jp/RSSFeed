@@ -5,27 +5,40 @@ import axios from 'axios';
 import cheerio from 'cheerio';
 
 import { dbClient, THECONVERSATION_URL_CA } from './config';
-import { News } from './types';
+import { News, Result, NullError } from './types';
 
-const fetchNews = async (): Promise<News[]> => {
+const fetchHtmlContent = async (): Promise<Result<cheerio.Root>> => {
     const response = await axios.get(THECONVERSATION_URL_CA);
-    const $ = cheerio.load(response.data);
-    const res: News[] = [];
 
+    if (response.status !== 200) {
+        return [null, new Error('failed to fetch news')];
+    }
+
+    try {
+        return [cheerio.load(response.data), null];
+    } catch (error) {
+        return [null, new Error(`Failed to parse HTML: ${error}`)];
+    }
+};
+
+const extractData = async ($: cheerio.Root): Promise<Result<News[]>> => {
     const sections = $('[data-testid="grid"]');
     const hotTopicSections = sections.slice(0, 7).get();
 
+    const res: News[] = [];
     hotTopicSections.forEach((section) => {
         const newsDivs = $(section).find(`div[data-testid="ImmutableGridSlot"]`);
 
         newsDivs.each((_, news) => {
             const id = $(news).find('a').attr('tentacle-id');
             if (!id) {
+                console.error('id not found');
                 return;
             }
 
             const link = $(news).find('a').attr('href');
             if (!link) {
+                console.error('link not found');
                 return;
             }
 
@@ -44,7 +57,11 @@ const fetchNews = async (): Promise<News[]> => {
         });
     });
 
-    return res;
+    if (res.length === 0) {
+        return [null, new Error('nothing to process')];
+    }
+
+    return [res, null];
 };
 
 const createBulkInsertReq = (news: News[]): BatchWriteItemCommand => {
@@ -64,8 +81,35 @@ const createBulkInsertReq = (news: News[]): BatchWriteItemCommand => {
     });
 };
 
+const saveNewsData = async (query: BatchWriteItemCommand): Promise<NullError> => {
+    try {
+        await dbClient.send(query);
+        return null;
+    } catch (error) {
+        return new Error(`Failed to save data: ${error}`);
+    }
+};
+
 export const lambdaHandler: Handler = async (): Promise<void> => {
-    const news: News[] = await fetchNews();
+    const [htmlData, error] = await fetchHtmlContent();
+
+    if (error) {
+        console.error(error);
+        return;
+    }
+
+    const [news, extractError] = await extractData(htmlData);
+
+    if (extractError) {
+        console.error(extractError);
+        return;
+    }
+
     const req: BatchWriteItemCommand = createBulkInsertReq(news);
-    await dbClient.send(req);
+    const saveError = await saveNewsData(req);
+
+    if (saveError) {
+        console.error(saveError);
+        return;
+    }
 };
