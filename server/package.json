@@ -13,6 +13,7 @@
         "test": "npm run compile && npm run unit"
     },
     "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.609.0",
         "@sparticuz/chromium": "^110.0.1",
         "axios": "^1.7.2",
         "cheerio": "^1.0.0-rc.12",

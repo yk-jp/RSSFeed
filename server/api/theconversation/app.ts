@@ -1,8 +1,10 @@
 import { Handler } from 'aws-lambda';
+import { BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
+
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-import { THECONVERSATION_URL_CA } from './config';
+import { dbClient, THECONVERSATION_URL_CA } from './config';
 import { News } from './types';
 
 const fetchNews = async (): Promise<News[]> => {
@@ -45,27 +47,25 @@ const fetchNews = async (): Promise<News[]> => {
     return res;
 };
 
-const saveNews = async (news: News[]): Promise<void> => {
-    for (const item of news) {
-        const params = {
-            TableName: 'NewsTable',
-            Item: {
-                id: item.link, // Using link as the unique identifier
-                title: item.title,
-                link: item.link,
-                image: item.image,
-            },
-        };
-
-        try {
-            await ddbDocClient.send(new PutCommand(params));
-        } catch (error) {
-            console.error(`Error saving news item to DynamoDB: ${item.link}`, error);
-        }
-    }
+const createBulkInsertReq = (news: News[]): BatchWriteItemCommand => {
+    return new BatchWriteItemCommand({
+        RequestItems: {
+            NewsTable: news.map((item) => ({
+                PutRequest: {
+                    Item: {
+                        id: { S: item.id },
+                        title: { S: item.title },
+                        link: { S: item.link },
+                        image: { S: item.image },
+                    },
+                },
+            })),
+        },
+    });
 };
 
 export const lambdaHandler: Handler = async (): Promise<void> => {
     const news: News[] = await fetchNews();
-    await saveNews(news);
+    const req: BatchWriteItemCommand = createBulkInsertReq(news);
+    await dbClient.send(req);
 };
