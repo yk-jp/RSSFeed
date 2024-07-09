@@ -30,17 +30,14 @@ const extractData = async ($: cheerio.Root): Promise<Result<News[]>> => {
         const newsDivs = $(section).find(`div[data-testid="ImmutableGridSlot"]`);
 
         newsDivs.each((_, news) => {
-            const id = $(news).find('a').attr('tentacle-id');
-            if (!id) {
-                console.error('id not found');
-                return;
-            }
-
             const link = $(news).find('a').attr('href');
             if (!link) {
                 console.error('link not found');
                 return;
             }
+
+            const linkTitle: string = link.split('/').pop() as string;
+            const id: string = linkTitle.substring(0, 36);
 
             let title = $(news).find('h3 span').text();
             let image = $(news).find('img').attr('src');
@@ -60,6 +57,8 @@ const extractData = async ($: cheerio.Root): Promise<Result<News[]>> => {
     if (res.length === 0) {
         return [null, new Error('nothing to process')];
     }
+
+    console.log('processed', res.length, 'news items');
 
     return [res, null];
 };
