@@ -13,14 +13,13 @@ Resources:
       Architectures:
         - x86_64
       Policies:
-        - PolicyName: NewsTableWritePolicy
-          PolicyDocument:
-            Statement:
-              - Effect: Allow
-                Action:
-                  - dynamodb:BatchWriteItem
-                  - dynamodb:PutItem
-                Resource: NewsTable
+        - DynamoDBWritePolicy:
+            TableName: !Ref NewsTable
+            Effect: Allow
+            Action:
+              - dynamodb:BatchWriteItem
+              - dynamodb:PutItem
+            PolicyName: NewsTableWritePolicy
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
