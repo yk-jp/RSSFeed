@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-RSSFeed}"
     image: localstack/localstack
     ports:
       - "127.0.0.1:4566:4566"            # LocalStack Gateway
@@ -14,10 +14,4 @@ services:
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-
-
-#  awslocal dynamodb create-table \                                         ─╯
-#     --table-name NewsTable \
-#     --attribute-definitions AttributeName=id,AttributeType=S \
-#     --key-schema AttributeName=id,KeyType=HASH \
-#     --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1
+      - ./init_db.sh:/docker-entrypoint-initaws.d/init_db.sh
