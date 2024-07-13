@@ -39,16 +39,44 @@ Resources:
         EntryPoints:
           - src/theconversation/app.ts
 
+  # eventbridge scheduler
   WebScrapingSchedule:
     Type: AWS::Events::Rule
     Properties:
       Description: "Run webscraping script every morning at 9 am"
-      ScheduleExpression: "rate(1 minute)"
-      # ScheduleExpression: "cron(0 9 * * ? *)"
+      ScheduleExpression: "cron(0 9 * * ? *)"
       State: ENABLED
       Targets:
         - Arn: !GetAtt TheconversationWebScrapeFunction.Arn
           Id: "TheconversationSchedule"
+
+  # Rest api
+  GetNewsListApi:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/api/getList.lambdaHandler
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref NewsTable
+            Effect: Allow
+            Action:
+              - dynamodb:Scan # get all items
+            PolicyName: NewsTableGetPolicy
+      Events:
+        GetRequest:
+          Type: Api
+          Properties:
+            Path: /news
+            Method: get
+
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: true
+        Target: "es2020"
+        Sourcemap: true
+        EntryPoints:
+          - src/api/getList.ts
 
   # dynamodb config
   NewsTable:
