@@ -15,7 +15,7 @@ Resources:
   TheconversationWebScrapeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: api/theconversation/app.lambdaHandler
+      Handler: src/theconversation/app.lambdaHandler
       Events:
         Schedule:
           Type: ScheduleV2
@@ -37,7 +37,7 @@ Resources:
         Target: "es2020"
         Sourcemap: true
         EntryPoints:
-          - api/theconversation/app.ts
+          - src/theconversation/app.ts
 
   WebScrapingSchedule:
     Type: AWS::Events::Rule
