@@ -4,8 +4,9 @@ import { BatchWriteItemCommand } from '@aws-sdk/client-dynamodb';
 import axios from 'axios';
 import cheerio from 'cheerio';
 
-import { dbClient, THECONVERSATION_URL_CA } from './config';
-import { News, Result, NullError } from './types';
+import { dbClient } from '../dbConfig';
+import { THECONVERSATION_URL_CA } from './config';
+import { News, Result, NullError } from '../types';
 
 const fetchHtmlContent = async (): Promise<Result<cheerio.Root>> => {
     const response = await axios.get(THECONVERSATION_URL_CA);
@@ -66,7 +67,7 @@ const extractData = async ($: cheerio.Root): Promise<Result<News[]>> => {
 const createBulkInsertReq = (news: News[]): BatchWriteItemCommand => {
     return new BatchWriteItemCommand({
         RequestItems: {
-            NewsTable: news.map((item) => ({
+            News: news.map((item) => ({
                 PutRequest: {
                     Item: {
                         id: { S: item.id },
