@@ -16,6 +16,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: api/theconversation/app.lambdaHandler
+      Events:
+        Schedule:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: rate(1 minute)
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref NewsTable
@@ -24,6 +29,7 @@ Resources:
               - dynamodb:BatchWriteItem
               - dynamodb:PutItem
             PolicyName: NewsTableWritePolicy
+
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
       BuildProperties:
@@ -32,6 +38,16 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - api/theconversation/app.ts
+
+  WebScrapingSchedule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "Run webscraping script every morning at 9 am"
+      ScheduleExpression: "cron(0 9 * * ? *)"
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt TheconversationWebScrapeFunction.Arn
+          Id: "TheconversationSchedule"
 
   # dynamodb config
   NewsTable:
@@ -47,4 +63,4 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-      TableName: NewsTable
+      TableName: News

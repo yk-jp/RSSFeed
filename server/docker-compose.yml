@@ -10,8 +10,8 @@ services:
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
-      - SERVICES=dynamodb,sts,cloudformation
+      - SERVICES=dynamodb,sts,cloudformation,eventbridge,iam,lambda,events
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - ./init_db.sh:/docker-entrypoint-initaws.d/init_db.sh
+      # - ./init_db.sh:/etc/localstack/init/ready.d/init_db.sh # https://docs.localstack.cloud/references/init-hooks/
