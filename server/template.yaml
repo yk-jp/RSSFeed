@@ -16,11 +16,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/theconversation/app.lambdaHandler
-      Events:
-        Schedule:
-          Type: ScheduleV2
-          Properties:
-            ScheduleExpression: rate(1 minute)
+      # Events:
+      #   Schedule:
+      #     Type: ScheduleV2
+      #     Properties:
+      #       ScheduleExpression: rate(1 minute)
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref NewsTable
@@ -43,7 +43,8 @@ Resources:
     Type: AWS::Events::Rule
     Properties:
       Description: "Run webscraping script every morning at 9 am"
-      ScheduleExpression: "cron(0 9 * * ? *)"
+      ScheduleExpression: "rate(1 minute)"
+      # ScheduleExpression: "cron(0 9 * * ? *)"
       State: ENABLED
       Targets:
         - Arn: !GetAtt TheconversationWebScrapeFunction.Arn
