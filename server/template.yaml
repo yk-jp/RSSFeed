@@ -93,3 +93,8 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       TableName: News
+
+Outputs:
+  GetNewsListApiEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for GetNewsListApi"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/news"
