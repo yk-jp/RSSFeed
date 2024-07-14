@@ -11,6 +11,7 @@ services:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
       - DEBUG=${DEBUG:-0}
       - SERVICES=dynamodb,sts,cloudformation,eventbridge,iam,lambda,events,apigateway
+      - PERSISTENCE=1 # it's a pro image only feature.
     volumes:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
