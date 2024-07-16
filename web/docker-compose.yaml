@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  rssfeed-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rssfeed-web
+    container_name: rssfeed-web
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
