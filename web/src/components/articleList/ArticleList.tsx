@@ -38,17 +38,11 @@ const images = [
 const ArticleList = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.container}>
+      <div className={styles.articleListContainer}>
         {images.map((imgSrc, index) => (
           <div key={index} className={styles.wrapper}>
-            <Image
-              src={imgSrc}
-              // layout="responsive"
-              alt="err"
-              fill={true}
-              objectFit="cover"
-            />
-            <div className={styles.articleInfo}>
+            <Image src={imgSrc} layout="responsive" alt="err" />
+            {/* <div className={styles.articleInfo}>
               <h2 className={styles.title}>
                 Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry.
@@ -61,8 +55,8 @@ const ArticleList = () => {
                 not only five centuries, but also the leap into electronic
                 typesetting, remaining essentially unchanged. It was popularised
                 in the 1960s with the release of Letraset shee
-              </p>
-            </div>
+              </p> */}
+            {/* </div> */}
           </div>
         ))}
       </div>
