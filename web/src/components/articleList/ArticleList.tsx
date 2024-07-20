@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import styles from "./articleList.module.css";
 
 import Article from "../article/Article";
@@ -38,29 +36,28 @@ const images = [
 const ArticleList = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.articleListContainer}>
+      <div className={styles.gridContainer}>
         {images.map((imgSrc, index) => (
-          <div key={index} className={styles.wrapper}>
-            <Image src={imgSrc} layout="responsive" alt="err" />
-            {/* <div className={styles.articleInfo}>
-              <h2 className={styles.title}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry.
-              </h2>
-              <p className={styles.outline}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the standard dummy text ever
-                since the 1500s, when an unknown printer took a galley of type
-                and scrambled it to make a type specimen book. It has survived
-                not only five centuries, but also the leap into electronic
-                typesetting, remaining essentially unchanged. It was popularised
-                in the 1960s with the release of Letraset shee
-              </p> */}
-            {/* </div> */}
+          <div
+            key={index}
+            style={{
+              backgroundImage: `url(${imgSrc.src})`,
+            }}
+            className={`${styles.wrapper} ${
+              index === 0 ? styles.newsTall : index === 1 ? styles.newsWide : ""
+            }`}
+          >
+            <h5 className={styles.newsTitle}>
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              Lorem Ipsum is simply dummy text of the printing and typesetting
+              industry.
+            </h5>
           </div>
         ))}
       </div>
-      {/* <Article /> */}
     </div>
   );
 };
