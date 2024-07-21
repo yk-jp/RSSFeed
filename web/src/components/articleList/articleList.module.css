@@ -15,12 +15,19 @@
 
 .wrapper {
   position: relative;
+  text-align: center;
+  overflow: hidden;
+}
+
+.imageContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  overflow: hidden;
-
-  text-align: center;
 }
 
 .newsTitle {
@@ -32,12 +39,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
-
   word-break: break-word;
   overflow-wrap: break-word;
-
   color: white;
-
   line-height: 1.5;
 }
 
