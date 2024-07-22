@@ -11,8 +11,9 @@ import githubImg from "@/components/assets/dummy/github.jpeg";
 import lakeImg from "@/components/assets/dummy/lake.jpg";
 import lizardImg from "@/components/assets/dummy/lizard.jpg";
 import seaImg from "@/components/assets/dummy/sea.jpg";
+import { News } from "@/types";
 
-const newsData = [
+const newsData: News[] = [
   {
     title: "Lorem Ipsum is simply dummy text of the printing and typesetting",
     image: birdImg,
@@ -98,8 +99,8 @@ const ArticleList = () => {
   return (
     <div className={styles.container}>
       <div className={styles.gridContainer}>
-        {newsData.map((news, index) => (
-          <Article key={index} idx={index} news={news} />
+        {newsData.map((news, idx) => (
+          <Article key={idx} idx={idx} news={news} />
         ))}
       </div>
     </div>

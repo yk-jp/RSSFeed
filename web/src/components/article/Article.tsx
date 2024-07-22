@@ -1,18 +1,14 @@
 import Link from "next/link";
-import { StaticImageData } from "next/image";
 
 import styles from "./article.module.css";
+import { News } from "@/types";
 
-type Props = {
+type ArticleProps = {
   idx: number;
-  news: {
-    title: string;
-    image: StaticImageData;
-    link: string;
-  };
+  news: News;
 };
 
-const Article = ({ idx, news }: Props) => {
+const Article = ({ idx, news }: ArticleProps) => {
   return (
     <Link
       href={news.link}
