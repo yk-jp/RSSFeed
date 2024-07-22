@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 import styles from "./articleList.module.css";
 
 import Article from "../article/Article";
@@ -101,22 +99,7 @@ const ArticleList = () => {
     <div className={styles.container}>
       <div className={styles.gridContainer}>
         {newsData.map((news, index) => (
-          <Link
-            href={news.link}
-            key={index}
-            className={`${styles.wrapper} ${
-              index === 0 ? styles.newsTall : index === 1 ? styles.newsWide : ""
-            }`}
-          >
-            <div
-              className={styles.imageContainer}
-              style={{
-                backgroundImage: `url(${news.image.src})`,
-              }}
-            >
-              <h5 className={styles.newsTitle}>{news.title}</h5>
-            </div>
-          </Link>
+          <Article key={index} idx={index} news={news} />
         ))}
       </div>
     </div>

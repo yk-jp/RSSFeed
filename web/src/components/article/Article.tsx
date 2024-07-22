@@ -1,47 +1,35 @@
-import Image from "next/image";
+import Link from "next/link";
+import { StaticImageData } from "next/image";
 
 import styles from "./article.module.css";
 
-import birdImg from "@/components/assets/dummy/bird.jpg";
-import boatImg from "@/components/assets/dummy/boat.jpg";
-import bokehImg from "@/components/assets/dummy/bokeh.jpg";
-import moonImg from "@/components/assets/dummy/full-moon.jpg";
-import girlImg from "@/components/assets/dummy/girl.png";
-import githubImg from "@/components/assets/dummy/github.jpeg";
-import lakeImg from "@/components/assets/dummy/lake.jpg";
-import lizardImg from "@/components/assets/dummy/lizard.jpg";
-import seaImg from "@/components/assets/dummy/sea.jpg";
+type Props = {
+  idx: number;
+  news: {
+    title: string;
+    image: StaticImageData;
+    link: string;
+  };
+};
 
-const images = [
-  birdImg,
-  boatImg,
-  bokehImg,
-  moonImg,
-  girlImg,
-  githubImg,
-  lakeImg,
-  lizardImg,
-  seaImg,
-  moonImg,
-  githubImg,
-  girlImg,
-  githubImg,
-  bokehImg,
-  boatImg,
-  bokehImg,
-  lizardImg,
-  seaImg,
-];
-
-const Article = () => {
+const Article = ({ idx, news }: Props) => {
   return (
-    <div className={styles.container}>
-      {images.map((imgSrc, index) => (
-        <div key={index} className={styles.wrapper}>
-          <Image src={imgSrc} alt="err" fill objectFit="cover" />
-        </div>
-      ))}
-    </div>
+    <Link
+      href={news.link}
+      key={idx}
+      className={`${styles.wrapper} ${
+        idx === 0 ? styles.newsTall : idx === 1 ? styles.newsWide : ""
+      }`}
+    >
+      <div
+        className={styles.imageContainer}
+        style={{
+          backgroundImage: `url(${news.image.src})`,
+        }}
+      >
+        <h5 className={styles.newsTitle}>{news.title}</h5>
+      </div>
+    </Link>
   );
 };
 
