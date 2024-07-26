@@ -12,3 +12,10 @@ services:
       - .:/app
       - /app/node_modules
       - /app/.next
+    networks:
+      - rssfeed-net
+
+networks:
+  rssfeed-net:
+    driver: bridge
+    name: rssfeed-net

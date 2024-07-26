@@ -1,14 +1,14 @@
 import Link from "next/link";
 
-import styles from "./article.module.css";
-import { News } from "@/types";
+import styles from "./news.module.css";
+import { TNews } from "@/types";
 
-type ArticleProps = {
+type NewsProps = {
   idx: number;
-  news: News;
+  news: TNews;
 };
 
-const Article = ({ idx, news }: ArticleProps) => {
+const News = ({ idx, news }: NewsProps) => {
   return (
     <Link
       href={news.link}
@@ -20,7 +20,7 @@ const Article = ({ idx, news }: ArticleProps) => {
       <div
         className={styles.imageContainer}
         style={{
-          backgroundImage: `url(${news.image.src})`,
+          backgroundImage: `url(${news.image})`,
         }}
       >
         <h5 className={styles.newsTitle}>{news.title}</h5>
@@ -29,4 +29,4 @@ const Article = ({ idx, news }: ArticleProps) => {
   );
 };
 
-export default Article;
+export default News;

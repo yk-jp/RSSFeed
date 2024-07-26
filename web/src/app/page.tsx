@@ -1,11 +1,17 @@
-import ArticleList from "@/components/articleList/ArticleList";
+import NewsList from "@/components/newsList/NewsList";
 import Header from "@/components/header/Header";
+import { getNewsList } from "@/api/news";
 
-export default function Home() {
+export default async function Home() {
+  const [newsList, error] = await getNewsList();
+  if (error) {
+    return <p>{error.message}</p>;
+  }
+
   return (
     <main>
       <Header />
-      <ArticleList />
+      <NewsList newsList={newsList} />
     </main>
   );
 }

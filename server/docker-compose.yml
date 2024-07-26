@@ -15,3 +15,10 @@ services:
       - "${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       # - ./init_db.sh:/etc/localstack/init/ready.d/init_db.sh # https://docs.localstack.cloud/references/init-hooks/
+    networks:
+      - rssfeed-net
+
+networks:
+  rssfeed-net:
+    driver: bridge
+    name: rssfeed-net
