@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  flex-direction: column;
+  padding-top: 5rem;
+}
+
+.iconWrapper {
+}
+
+.icon {
+  width: 100%;
+  height: 100%;
+}
+
+.errorWrapper {
+}
+
+.errorWrapper h2 {
+  margin-bottom: 1rem;
+}
+
+.error {
+  text-align: center;
+  font-weight: bold;
+  color: gray;
+}
+
+.errorSub {
+  text-align: center;
+  color: gray;
+}

@@ -5,7 +5,8 @@ import { getNewsList } from "@/api/news";
 export default async function Home() {
   const [newsList, error] = await getNewsList();
   if (error) {
-    return <p>{error.message}</p>;
+    console.log(error);
+    throw error;
   }
 
   return (
