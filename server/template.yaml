@@ -98,3 +98,7 @@ Outputs:
   GetNewsListApiEndpoint:
     Description: "API Gateway endpoint URL for Prod stage for GetNewsListApi"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/news"
+
+  GetNewsListApiEndpointLocalStack:
+    Description: "API Gateway endpoint URL for GetNewsListApi local development"
+    Value: !Sub "http://localhost:4566/restapis/${ServerlessRestApi}/Prod/_user_request_/news"

@@ -1,10 +1,12 @@
+import dotenv from 'dotenv';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
+dotenv.config();
+
+const REGION = process.env.REGION || 'us-west-2';
+const ENDPOINT = process.env.DB_ENDPOINT || undefined;
+
 export const dbClient = new DynamoDBClient({
-    region: 'us-west-2',
-    endpoint: 'http://host.docker.internal:4566',
-    credentials: {
-        accessKeyId: 'test',
-        secretAccessKey: 'test',
-    },
+    region: REGION,
+    ...(ENDPOINT && { endpoint: ENDPOINT }),
 });
