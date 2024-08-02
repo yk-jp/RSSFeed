@@ -89,6 +89,9 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
       TableName: News
+      TimeToLiveSpecification:
+        AttributeName: expire_at
+        Enabled: true
 
 Outputs:
   GetNewsListApiEndpoint:
