@@ -16,11 +16,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Handler: src/theconversation/app.lambdaHandler
-      # Events:
-      #   Schedule:
-      #     Type: ScheduleV2
-      #     Properties:
-      #       ScheduleExpression: rate(1 minute)
+      Timeout: 15
       Policies:
         - DynamoDBWritePolicy:
             TableName: !Ref NewsTable

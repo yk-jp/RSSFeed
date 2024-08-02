@@ -22,6 +22,12 @@ const fetchHtmlContent = async (): Promise<Result<cheerio.Root>> => {
     }
 };
 
+/**
+ * Extracts the data from the HTML page.
+ * @param {$: cheerio.Root} $ - The Cheerio root object representing the HTML page.
+ * @return {Promise<Result<News[]>>} A Promise that resolves to a Result object containing
+ * the extracted News array and a possible error.
+ */
 const extractData = async ($: cheerio.Root): Promise<Result<News[]>> => {
     const sections = $('[data-testid="grid"]');
     const hotTopicSections = sections.slice(0, 7).get();
@@ -64,7 +70,16 @@ const extractData = async ($: cheerio.Root): Promise<Result<News[]>> => {
     return [res, null];
 };
 
+/**
+ * Creates a BatchWriteItemCommand for inserting multiple news items into the
+ * 'News' table. Maximum number of items per request is 25.
+ *
+ * @param {News[]} news
+ * @return {BatchWriteItemCommand}
+ */
 const createBulkInsertReq = (news: News[]): BatchWriteItemCommand => {
+    news = news.slice(0, 25);
+
     return new BatchWriteItemCommand({
         RequestItems: {
             News: news.map((item) => ({
