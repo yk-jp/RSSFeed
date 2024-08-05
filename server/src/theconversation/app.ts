@@ -9,6 +9,7 @@ import { THECONVERSATION_URL_CA } from './config';
 import { News, Result, NullError } from '../types';
 
 const THREE_DAYS_SECONDS = 3 * 24 * 60 * 60; // ttl doesn't work instantly so 3 days means data will be deleted after 3 days + within 48 hours.
+const TTL = Math.floor(Date.now() / 1000) + THREE_DAYS_SECONDS;
 
 const fetchHtmlContent = async (): Promise<Result<cheerio.Root>> => {
     const response = await axios.get(THECONVERSATION_URL_CA);
@@ -91,7 +92,7 @@ const createBulkInsertReq = (news: News[]): BatchWriteItemCommand => {
                         title: { S: item.title },
                         link: { S: item.link },
                         image: { S: item.image },
-                        expire_at: { N: String(Math.floor(Date.now() / 1000) + THREE_DAYS_SECONDS) },
+                        expire_at: { N: String(TTL) },
                     },
                 },
             })),
