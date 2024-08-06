@@ -2,28 +2,38 @@ import { APIGatewayProxyResult, Handler } from 'aws-lambda';
 import { ScanCommand, ScanCommandOutput } from '@aws-sdk/client-dynamodb';
 
 import { dbClient } from '../dbConfig';
-import { Result, News } from '../types';
+import { Result, News, NewsListResp } from '../types';
 
-const getNewsData = async (query: ScanCommand): Promise<Result<News[]>> => {
+const getNewsData = async (limit: number, offset: number): Promise<Result<NewsListResp>> => {
     try {
-        const resp: ScanCommandOutput = await dbClient.send(query);
+        const dataResp: ScanCommandOutput = await dbClient.send(
+            new ScanCommand({
+                TableName: 'News',
+            }),
+        );
 
-        const newsList: News[] =
-            resp.Items?.map((item) => ({
+        let newsList: News[] =
+            dataResp.Items?.map((item) => ({
                 id: item.id.S as string,
                 title: item.title.S as string,
                 link: item.link.S as string,
                 image: item.image.S as string,
             })) || [];
-        return [newsList, null];
+
+        const totalCount: number = newsList.length;
+        newsList = newsList.slice(offset, offset + limit);
+
+        return [{ newsList, totalCount }, null];
     } catch (error) {
         return [null, new Error(`Failed to get list data: ${error}`)];
     }
 };
 
-export const lambdaHandler: Handler = async (): Promise<APIGatewayProxyResult> => {
-    const command = new ScanCommand({ TableName: 'News' });
-    const [newsList, getListError] = await getNewsData(command);
+export const lambdaHandler: Handler = async (event): Promise<APIGatewayProxyResult> => {
+    const limit = parseInt(event.queryStringParameters?.limit || '10', 10);
+    const offset = parseInt(event.queryStringParameters?.offset || '0', 10);
+
+    const [newsList, getListError] = await getNewsData(limit, offset);
 
     if (getListError) {
         console.error(getListError);

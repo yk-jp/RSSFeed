@@ -25,6 +25,11 @@ Resources:
               - dynamodb:BatchWriteItem
               - dynamodb:PutItem
             PolicyName: NewsTableWritePolicy
+      Events:
+        WebScrapingSchedule:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: "cron(0 9 * * ? *)"
 
     Metadata: # Manage esbuild properties
       BuildMethod: esbuild
@@ -34,17 +39,6 @@ Resources:
         Sourcemap: true
         EntryPoints:
           - src/theconversation/app.ts
-
-  # eventbridge scheduler
-  WebScrapingSchedule:
-    Type: AWS::Events::Rule
-    Properties:
-      Description: "Run webscraping script every morning at 9 am"
-      ScheduleExpression: "cron(0 9 * * ? *)"
-      State: ENABLED
-      Targets:
-        - Arn: !GetAtt TheconversationWebScrapeFunction.Arn
-          Id: "TheconversationSchedule"
 
   # Rest api
   GetNewsListApi:

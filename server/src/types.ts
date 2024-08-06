@@ -8,3 +8,8 @@ export type News = {
     link: string;
     image: string;
 };
+
+export type NewsListResp = {
+    newsList: News[];
+    totalCount: number;
+};
