@@ -13,10 +13,13 @@ export const getNewsList = async ({
   }
 
   try {
-    const response = await fetch(`${ApiKey}/news`, {
-      method: "GET",
-      next: { revalidate: 43200 },
-    });
+    const response = await fetch(
+      `${ApiKey}/news?limit=${limit}&offset=${offset}`,
+      {
+        method: "GET",
+        next: { revalidate: 43200 },
+      }
+    );
 
     if (!response.ok) {
       return [
