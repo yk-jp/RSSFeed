@@ -15,6 +15,9 @@ const NewsList = ({ newsList }: NewsListProps) => {
           <News key={idx} idx={idx} news={news} />
         ))}
       </div>
+      <div className={styles.loadMore}>
+        <button>Load More</button>
+      </div>
     </div>
   );
 };

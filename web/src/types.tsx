@@ -6,6 +6,11 @@ export type Result<T> = [T, null] | [null, Error];
 
 export type TNews = {
   title: string;
-  image: StaticImageData;
+  image: string; // Changed from StaticImageData to string
   link: string;
+};
+
+export type TNewsReqParams = {
+  limit: number;
+  offset: number;
 };

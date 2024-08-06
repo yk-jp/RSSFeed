@@ -1,7 +1,17 @@
-import { TNews, Result } from "@/types";
+import { TNews, Result, TNewsReqParams } from "@/types";
 import { ApiKey } from "@/config";
+import newsData from "@/_data/dummy_news.json";
 
-export const getNewsList = async (): Promise<Result<TNews[]>> => {
+const useDummyData = true;
+
+export const getNewsList = async ({
+  limit,
+  offset,
+}: TNewsReqParams): Promise<Result<TNews[]>> => {
+  if (useDummyData) {
+    return [newsData["Items"].slice(offset, offset + limit), null];
+  }
+
   try {
     const response = await fetch(`${ApiKey}/news`, {
       method: "GET",
