@@ -34,7 +34,7 @@
   min-width: 200px;
 }
 
-.loadMore button:hover {
+.loadMore button:not(:disabled):hover {
   background-color: #1e9bff;
   letter-spacing: 0.25em;
   box-shadow: 0 0 35px #1e9bff;

@@ -14,3 +14,8 @@ export type TNewsReqParams = {
   limit: number;
   offset: number;
 };
+
+export type TNewsListResp = {
+  newsList: TNews[];
+  totalCount: number;
+};
