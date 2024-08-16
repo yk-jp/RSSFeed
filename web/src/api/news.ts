@@ -17,7 +17,6 @@ export const getNewsList = async ({
   }
 
   try {
-    console.log(limit, offset);
     const response = await fetch(
       `${ApiKey}/news?limit=${limit}&offset=${offset}`,
       {
@@ -26,8 +25,6 @@ export const getNewsList = async ({
       }
     );
 
-    console.log(response);
-
     if (!response.ok) {
       return [
         null,
@@ -35,7 +32,6 @@ export const getNewsList = async ({
       ];
     }
     const data: TNewsListResp = await response.json();
-    console.log(data);
     return [data, null];
   } catch (error) {
     console.error(error);

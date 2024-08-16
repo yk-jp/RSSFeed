@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  rssfeed-web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    container_name: rssfeed-web-prod
+    ports:
+      - 3000:3000
+
+# networks:
+#   rssfeed-net:
+#     driver: bridge
